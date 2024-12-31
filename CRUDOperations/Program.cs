@@ -1,4 +1,5 @@
 using CRUDOperations.Data;
+using CRUDOperations.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<RateLimitMiddleware>();
+app.UseMiddleware<ProfilingMiddleware>();
 
 app.UseHttpsRedirection();
 
