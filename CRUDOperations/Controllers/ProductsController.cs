@@ -1,4 +1,5 @@
 ﻿using CRUDOperations.Data;
+using CRUDOperations.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,6 +7,7 @@ namespace CRUDOperations.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _dbcontext;
@@ -25,6 +27,7 @@ namespace CRUDOperations.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [LogSensitiveAction]
         public ActionResult<Product> GetById(int id)
         {
             var record = _dbcontext.Set<Product>().Find(id);
