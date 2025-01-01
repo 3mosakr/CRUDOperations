@@ -25,9 +25,9 @@ namespace CRUDOperations.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("GetById")]
         [LogSensitiveAction]
-        public ActionResult<Product> GetById(int id)
+        public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
         {
             var record = _dbcontext.Set<Product>().Find(id);
             if(record is null) 
@@ -38,7 +38,7 @@ namespace CRUDOperations.Controllers
 
         [HttpPost]
         [Route("")] // default post Method
-        public ActionResult<int> CreateProduct(Product product)
+        public ActionResult<int> CreateProduct(Product product, [FromHeader(Name = "Accept-Language")] string language)
         {
             product.Id = 0;  // defult value use for insert in db - can remove it
             _dbcontext.Set<Product>().Add(product);
