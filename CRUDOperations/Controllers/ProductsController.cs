@@ -7,7 +7,6 @@ namespace CRUDOperations.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _dbcontext;

@@ -1,3 +1,4 @@
+using CRUDOperations;
 using CRUDOperations.Data;
 using CRUDOperations.Filters;
 using CRUDOperations.Middlewares;
@@ -5,6 +6,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("Config.json");
+
+// 1
+//var attachmentOptions = builder.Configuration.GetSection("Attachment").Get<AttachmentOptions>();
+//builder.Services.AddSingleton(attachmentOptions);
+// 2
+//var attachmentOptions = new AttachmentOptions();
+//builder.Configuration.GetSection("Attachment").Bind(attachmentOptions);
+//builder.Services.AddSingleton(attachmentOptions);
+// 3 options pattern
+builder.Services.Configure<AttachmentOptions>(builder.Configuration.GetSection("Attachment"));
+
 
 // Add services to the container.
 
@@ -17,8 +31,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
-    builder => builder.UseSqlServer(
-        "server=.;Database=Products;Integrated Security=True;Trust Server Certificate=True;")
+    cfg => cfg.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
 var app = builder.Build();
