@@ -1,7 +1,9 @@
 using CRUDOperations;
+using CRUDOperations.Authentication;
 using CRUDOperations.Data;
 using CRUDOperations.Filters;
 using CRUDOperations.Middlewares;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,7 +22,7 @@ builder.Configuration.AddJsonFile("Config.json");
 builder.Services.Configure<AttachmentOptions>(builder.Configuration.GetSection("Attachment"));
 
 
-// Add services to the container.
+// Add services to the DI container.
 
 builder.Services.AddControllers(options =>
 {
@@ -33,6 +35,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(
     cfg => cfg.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
+
+// 
+builder.Services.AddAuthentication()
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("Basic", null);
+
 
 var app = builder.Build();
 

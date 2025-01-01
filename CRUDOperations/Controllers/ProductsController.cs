@@ -1,12 +1,16 @@
 ﻿using CRUDOperations.Data;
 using CRUDOperations.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CRUDOperations.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
+
     public class ProductsController : ControllerBase
     {
         private readonly ApplicationDbContext _dbcontext;
@@ -20,14 +24,21 @@ namespace CRUDOperations.Controllers
         [Route("")]
         public ActionResult<IEnumerable<Product>> Get()
         {
+            // get user data in api
+            var username = User.Identity.Name;
+            var userId = ((ClaimsIdentity)User.Identity).FindFirst(ClaimTypes.NameIdentifier).Value;
+
             var records = _dbcontext.Set<Product>().ToList(); 
             return Ok(records);
         }
 
         [HttpGet]
-        [Route("GetById")]
+        //[Route("GetById")]
+        [Route("{id}")]
+        [AllowAnonymous]    
         [LogSensitiveAction]
-        public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
+        //public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
+        public ActionResult<Product> GetById(int id)
         {
             var record = _dbcontext.Set<Product>().Find(id);
             if(record is null) 
