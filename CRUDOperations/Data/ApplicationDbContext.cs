@@ -22,6 +22,8 @@ namespace CRUDOperations.Data
 
             modelBuilder.Entity<Product>()
                 .ToTable("Products");
+            modelBuilder.Entity<User>()
+                .ToTable("users");
         }
     }
 }
