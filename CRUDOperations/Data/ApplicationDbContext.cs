@@ -24,6 +24,10 @@ namespace CRUDOperations.Data
                 .ToTable("Products");
             modelBuilder.Entity<User>()
                 .ToTable("users");
+            modelBuilder.Entity<UserPermission>()
+                .ToTable("userPermissions")
+                .HasKey(x => new {x.UserId, x.PermissionId});
+
         }
     }
 }

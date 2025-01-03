@@ -1,5 +1,6 @@
 using CRUDOperations;
 using CRUDOperations.Authentication;
+using CRUDOperations.Authorization;
 using CRUDOperations.Data;
 using CRUDOperations.Filters;
 using CRUDOperations.Middlewares;
@@ -30,6 +31,7 @@ builder.Services.Configure<AttachmentOptions>(builder.Configuration.GetSection("
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<LogActivityFilter>();
+    options.Filters.Add<PermissionBasedAuthorizationFilter>();
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

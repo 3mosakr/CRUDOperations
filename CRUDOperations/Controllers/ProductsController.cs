@@ -1,4 +1,5 @@
-﻿using CRUDOperations.Data;
+﻿using CRUDOperations.Authorization;
+using CRUDOperations.Data;
 using CRUDOperations.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +23,7 @@ namespace CRUDOperations.Controllers
 
         [HttpGet]
         [Route("")]
+        [CheckPermission(Permission.ReadProducts)]
         public ActionResult<IEnumerable<Product>> Get()
         {
             // get user data in api
@@ -35,7 +37,8 @@ namespace CRUDOperations.Controllers
         [HttpGet]
         //[Route("GetById")]
         [Route("{id}")]
-        [AllowAnonymous]    
+        //[AllowAnonymous]    
+        [CheckPermission(Permission.ReadProducts)]
         [LogSensitiveAction]
         //public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
         public ActionResult<Product> GetById(int id)

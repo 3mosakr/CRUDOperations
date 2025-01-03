@@ -17,12 +17,11 @@ namespace CRUDOperations.Controllers
         public ActionResult<string> AuthenticateUser(AuthenticationRequest request)
         {
             // validate username and password from db for test
-            var user = context.Set<User>().FirstOrDefault(x=>x.username == request.UserName);
+            var user = context.Set<User>().FirstOrDefault(x=>x.username == request.UserName 
+                && x.password == request.Password);
             if (user == null)
-                return NotFound();
+                return Unauthorized();
             
-            if (user.username != request.UserName || user.password != request.Password)
-                return NotFound();
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor 
@@ -36,8 +35,8 @@ namespace CRUDOperations.Controllers
                 // user informations
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new (ClaimTypes.NameIdentifier, request.UserName),
-                    new (ClaimTypes.Email, "a@b.com")
+                    new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new (ClaimTypes.Name, user.username)
                 })
             }; 
             var securtyToken = tokenHandler.CreateToken(tokenDescriptor);
