@@ -24,8 +24,10 @@ namespace CRUDOperations.Controllers
         [HttpGet]
         [Route("")]
         //[CheckPermission(Permission.ReadProducts)]
-        [Authorize(Roles ="Admin,SuperUser")]
+        //[Authorize(Roles = "Admin")]
         //[Authorize(Roles = "SuperUser")]
+        //[Authorize(Roles ="Admin,SuperUser")]
+        [Authorize(Policy = "SuperUsersOnly")]
         public ActionResult<IEnumerable<Product>> Get()
         {
             // get user data in api
@@ -40,8 +42,10 @@ namespace CRUDOperations.Controllers
         //[Route("GetById")]
         [Route("{id}")]
         //[AllowAnonymous]    
+        //[Authorize(Roles = "Admin")]
         //[CheckPermission(Permission.ReadProducts)]
         [LogSensitiveAction]
+        [Authorize(Policy = "Employee")]
         //public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
         public ActionResult<Product> GetById(int id)
         {
@@ -54,7 +58,8 @@ namespace CRUDOperations.Controllers
 
         [HttpPost]
         [Route("")] // default post Method
-        public ActionResult<int> CreateProduct(Product product, [FromHeader(Name = "Accept-Language")] string language)
+        //public ActionResult<int> CreateProduct(Product product, [FromHeader(Name = "Accept-Language")] string language)
+        public ActionResult<int> CreateProduct(Product product)
         {
             product.Id = 0;  // defult value use for insert in db - can remove it
             _dbcontext.Set<Product>().Add(product);

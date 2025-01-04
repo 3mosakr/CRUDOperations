@@ -63,6 +63,17 @@ builder.Services.AddAuthentication()
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SuperUsersOnly", builder =>
+    {
+        builder.RequireRole("SuperUser");
+    });
+    options.AddPolicy("Employee", builder =>
+    {
+        builder.RequireClaim("UserType", "Employee");
+    });
+});
 
 var app = builder.Build();
 
