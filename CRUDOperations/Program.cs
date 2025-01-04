@@ -66,9 +66,13 @@ builder.Services.AddAuthentication()
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("SuperUsersOnly", builder =>
-    {
-        builder.RequireRole("SuperUser");
+    { // custom
+        builder.RequireAssertion(context => context.User.IsInRole("SuperUser"));
     });
+    //options.AddPolicy("SuperUsersOnly", builder =>
+    //{
+    //    builder.RequireRole("SuperUser");
+    //});
     options.AddPolicy("Employee", builder =>
     {
         builder.RequireClaim("UserType", "Employee");
