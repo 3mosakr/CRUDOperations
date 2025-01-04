@@ -39,7 +39,8 @@ namespace CRUDOperations.Controllers
                     new (ClaimTypes.Name, user.username),
                     //new Claim(ClaimTypes.Role, "Admin"),
                     new Claim(ClaimTypes.Role, "SuperUser"),
-                    new Claim("UserType", "Employee")
+                    new Claim("UserType", "Employee"),
+                    new Claim("DateOfBirth", "1999-01-01")
                 })
             }; 
             var securtyToken = tokenHandler.CreateToken(tokenDescriptor);

@@ -6,6 +6,7 @@ using CRUDOperations.Filters;
 using CRUDOperations.Middlewares;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -63,12 +64,18 @@ builder.Services.AddAuthentication()
         };
     });
 
+builder.Services.AddSingleton<IAuthorizationHandler, AgeAuthorizationHandler>();
+
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("SuperUsersOnly", builder =>
-    { // custom
-        builder.RequireAssertion(context => context.User.IsInRole("SuperUser"));
-    });
+    // policy Requirement
+    options.AddPolicy("AgeGreaterThan25", builder => 
+        builder.AddRequirements(new AgeGreaterThan25Requirement()));
+
+    //options.AddPolicy("SuperUsersOnly", builder =>
+    //{ // simple custom
+    //    builder.RequireAssertion(context => context.User.IsInRole("SuperUser"));
+    //});
     //options.AddPolicy("SuperUsersOnly", builder =>
     //{
     //    builder.RequireRole("SuperUser");

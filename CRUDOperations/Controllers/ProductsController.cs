@@ -27,7 +27,8 @@ namespace CRUDOperations.Controllers
         //[Authorize(Roles = "Admin")]
         //[Authorize(Roles = "SuperUser")]
         //[Authorize(Roles ="Admin,SuperUser")]
-        [Authorize(Policy = "SuperUsersOnly")]
+        //[Authorize(Policy = "SuperUsersOnly")]
+        [Authorize(Policy = "AgeGreaterThan25")]
         public ActionResult<IEnumerable<Product>> Get()
         {
             // get user data in api
