@@ -23,7 +23,9 @@ namespace CRUDOperations.Controllers
 
         [HttpGet]
         [Route("")]
-        [CheckPermission(Permission.ReadProducts)]
+        //[CheckPermission(Permission.ReadProducts)]
+        [Authorize(Roles ="Admin,SuperUser")]
+        //[Authorize(Roles = "SuperUser")]
         public ActionResult<IEnumerable<Product>> Get()
         {
             // get user data in api
@@ -38,7 +40,7 @@ namespace CRUDOperations.Controllers
         //[Route("GetById")]
         [Route("{id}")]
         //[AllowAnonymous]    
-        [CheckPermission(Permission.ReadProducts)]
+        //[CheckPermission(Permission.ReadProducts)]
         [LogSensitiveAction]
         //public ActionResult<Product> GetById([FromQuery(Name = "Key")] int id)
         public ActionResult<Product> GetById(int id)
